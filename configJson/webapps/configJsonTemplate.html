@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <!-- when using the JSONEditor mode "code", it's important to specify charset utf-8 -->
+    <meta charset="utf-8">
+	<!-- Includes here are for the JSONEditor -->
+    <link href="../../config/plugins/configJson/webapps/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+    <script src="../../config/plugins/configJson/webapps/jsoneditor/dist/jsoneditor.min.js"></script>
+    
+</head>
+<body>
+	
+	<p>
+		<!-- Get rid of this button by listening for a change in the editor? -->
+		Save Config File to Studio: <input type="button" id="saveDocument" value="Save" />
+	</p>	
+	<form method="post" action="../../config/plugins/configJson/webapps/form_action.php" target="_parent">
+		<div id="jsoneditor" style="width: 400px; height: 400px;"></div>
+		<script>
+	   
+	   		//======================
+			// create the editor
+			//======================
+			const container = document.getElementById("jsoneditor")
+			const options = {
+				mode: 'tree'
+			}
+			
+			const editor = new JSONEditor(container, options)
+			
+			//======================
+			// Load JSON from config file
+			//======================
+			
+			const config = fetch("http://docker.for.mac.localhost:81/StudioServer/config/plugins/configJson/webapps/loadJson.php")
+			  .then((response) => response.json())
+			  .then((config) => {
+				return config;
+			  });
+
+			const getConfig = () => {
+			  config.then((a) => {
+				
+				// Set the JSON in the editor
+				editor.set(a);
+			
+			  });
+			  
+			};
+			
+			//======================
+			// Call to load JSON config into the editor
+			//======================
+			getConfig();
+
+			//======================			
+			// As changes are made within the editor get the json
+			//======================
+			const updatedJson = editor.get();
+			
+			//======================
+			// When the 'Save' button is pressed...save a JSON document to the server
+			//======================
+			document.getElementById('saveDocument').onclick = function () {
+				var mydata = '';
+				var mydata = JSON.stringify(editor.get());
+				var userdata = {'id':mydata};
+				
+				$.ajax({
+					type: "POST",
+					url: "../../config/plugins/configJson/webapps/saveJson.php",
+					data:userdata, 
+				success: function(data){
+					console.log(data);
+				}
+            });
+		
+		
+		}
+			
+		</script>
+  	</form>
+  	<p style="color:red;">*Do not store passwords within your JSON config file</p>
+</body>
+</html>
