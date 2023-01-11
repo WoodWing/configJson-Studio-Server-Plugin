@@ -15,3 +15,10 @@
    limitations under the License.
 ****************************************************************************/
 
+$myFileStoreTempDir = PERSISTENTDIRECTORY . '/Plugins';
+$myConfigFolder = '/configJson';
+$myConfigFileName = "configJson.json";
+
+// For logging
+$myLogFile = '/configJson_logs.txt';
+$completeLogFilePath = $myFileStoreTempDir . $myConfigFolder . $myLogFile;
