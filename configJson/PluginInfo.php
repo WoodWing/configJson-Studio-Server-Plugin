@@ -25,7 +25,7 @@ class configJson_EnterprisePlugin extends EnterprisePlugin
 		require_once BASEDIR.'/server/interfaces/plugins/PluginInfoData.class.php';
 		$info = new PluginInfoData(); 
 		$info->DisplayName = 'config Json';
-		$info->Version     = '10.14 20221031'; // don't use PRODUCTVERSION
+		$info->Version     = '1.0.1'; // don't use PRODUCTVERSION
 		$info->Description = 'This plugin is meant to show how to use a JSON Editor to create configurations for a Server Plugin. No need to use config_overrule.php';
 		$info->Copyright   = COPYRIGHT_WOODWING;
 		return $info;
