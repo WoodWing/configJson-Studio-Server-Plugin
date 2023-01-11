@@ -19,41 +19,30 @@
    v1.0.0 - Initial version
 ****************************************************************************/
 
-
+// Studio Server config
 require_once __DIR__ . '/../../../config.php';
 
-// plugin config.php
+// plugin config.php and wwusa functions
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../resources/wwusa_functions.php';
 
-$form_post = $_POST['plugin_name'];
-
-// Directory stuff
-$myFileStoreTempDir = PERSISTENTDIRECTORY . '/Plugins';
-$myConfigFolder = '/configJson';
+// Config directory and file path
 $myConfigFolderPath = $myFileStoreTempDir . $myConfigFolder;
-$myConfigFileName = "configJson.json";
-//$createPluginDir = mkdir($myConfigFolderPath, 0700);
-
-// For logging
-$myLogFile = 'configJson_logs.txt';
 
 // Full paths
 $myConfigFile = $myConfigFolderPath . "/" . $myConfigFileName;
 $myLogFile = $myConfigFolderPath . "/" . $myLogFile;
 
-
-
-$stuff1 = array("Peter"=>35, "Ben"=>37, "Joe"=>43);
-$stuff = "jeff";
-
 // Call to function to process JSON config file
 $jsonFile = processJsonConfigFile($myConfigFile);
 
-echo($jsonFile);
+// write a log file for the date and retrieved config file
+$theDate = date(DATE_RFC2822);
 
-$logProcessedFile = logProcessing($myLogFile, $jsonFile);
+configJson_writeLogFile($myLogFile, "Loading file: " . $theDate . "\r" . $jsonFile . "\r\r");
 
-return json_encode($stuff);
+// return the results back to the request
+echo $jsonFile;
 
 //====================
 // Functions
@@ -71,12 +60,4 @@ function processJsonConfigFile($fileLocation){
 	  return $e->getMessage();
 
 	}
-}
-
-
-function logProcessing($pathToLogFile, $text){
-	// Log operations
-	$createMyFile = fopen($pathToLogFile, "w");
-	$writeMyFile = fwrite($createMyFile, $text);
-	$closeMyFile = fclose($createMyFile);
 }
