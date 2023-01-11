@@ -15,7 +15,7 @@
 		Save Config File to Studio: <input type="button" id="saveDocument" value="Save" />
 	</p>	
 	<form method="post" action="../../config/plugins/configJson/webapps/form_action.php" target="_parent">
-		<div id="jsoneditor" style="width: 400px; height: 400px;"></div>
+		<div id="jsoneditor" style="width: 800px; height: 400px;"></div>
 		<script>
 	   
 	   		//======================
@@ -32,12 +32,16 @@
 			// Load JSON from config file
 			//======================
 			
-			const config = fetch("http://docker.for.mac.localhost:81/StudioServer/config/plugins/configJson/webapps/loadJson.php")
+			const config = fetch("../../config/plugins/configJson/webapps/loadJson.php")
 			  .then((response) => response.json())
 			  .then((config) => {
 				return config;
-			  });
-
+			  })
+			  .catch(err => {
+            	console.debug("Error in fetch", err);
+       		 });
+			  
+			
 			const getConfig = () => {
 			  config.then((a) => {
 				
@@ -48,6 +52,8 @@
 			  
 			};
 			
+			
+			
 			//======================
 			// Call to load JSON config into the editor
 			//======================
@@ -57,6 +63,7 @@
 			// As changes are made within the editor get the json
 			//======================
 			const updatedJson = editor.get();
+	
 			
 			//======================
 			// When the 'Save' button is pressed...save a JSON document to the server
