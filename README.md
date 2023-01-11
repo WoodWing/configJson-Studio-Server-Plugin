@@ -43,8 +43,8 @@ https://user-images.githubusercontent.com/43406765/211933325-c0152627-d871-4db1-
 
 
 ## Release Notes
-v1.0.0 - Initial Release
-v1.0.1 - Multiple changes made throughout the code to clean things up a bit. 
+1. v1.0.0 - Initial Release
+2. v1.0.1 - Multiple changes made throughout the code to clean things up a bit. 
 
 
 ## Resources for the plugin
