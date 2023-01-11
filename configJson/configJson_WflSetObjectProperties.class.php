@@ -51,12 +51,14 @@ class configJson_WflSetObjectProperties extends WflSetObjectProperties_Enterpris
 			
 				// Read the JSON file into a variable
 				$configJsonFileContents = file_get_contents($myConfigFolderAndFilePath);
+				
+				configJson_writeLogFile($completeLogFilePath, $configJsonFileContents);
 			
 				// Decode the JSON file (into a php array)
 				$jsonToPHPArray = json_decode($configJsonFileContents, true);
 			
 				// Get the key/value we are looking for
-				$jsonToPHPC_JsonTrigger = $jsonToPHPArray['config']['JSONTRIGGER'];
+				$jsonToPHPC_JsonTrigger = $jsonToPHPArray['config']['C_JSONTRIGGER'];
 		
 				// Apply the value from the JSON file to the ExtraMetaData field
 				$req->MetaData->ExtraMetaData[0]->Values[0] = $jsonToPHPC_JsonTrigger;
