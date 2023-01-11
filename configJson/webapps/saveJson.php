@@ -19,25 +19,23 @@
    v1.0.0 - Initial version
 ****************************************************************************/
 
-
-
+// Studio Server config file
 require_once __DIR__ . '/../../../config.php';
 
-// plugin config.php
+// plugin config.php and wwusa functions
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../resources/wwusa_functions.php';
 
 $form_post = $_POST['id'];
 
-$myFileStoreTempDir = PERSISTENTDIRECTORY . '/Plugins';
-$myConfigFolder = '/configJson';
-$myConfigFolderPath = $myFileStoreTempDir . $myConfigFolder;
-$createPluginDir = mkdir($myConfigFolderPath, 0700);
+// Define Path to the config file
+$myConfigFile = $myFileStoreTempDir . $myConfigFolder . "/" . $myConfigFileName;
 
+// Check to see if the directory exists, if not create it
+if (!file_exists($myConfigFile)) {
+    $createPluginDir = mkdir($myFileStoreTempDir . $myConfigFolder , 0700);
+}
 
-$myConfigFileName = 'configJson.json';
-$myConfigFile = $myConfigFolderPath . "/" . $myConfigFileName;
-//print $myConfigFile;
+// Write the config file back o the server
+configJson_writeJsonConfigFile($myConfigFile, $form_post);
 
-$createMyFile = fopen($myConfigFile, "w");
-$writeMyFile = fwrite($createMyFile, $form_post);
-$closeMyFile = fclose($createMyFile);
