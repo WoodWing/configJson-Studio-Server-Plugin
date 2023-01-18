@@ -28,7 +28,7 @@ require_once __DIR__ . '/../config.php';
 
 checkSecure(true);
 
-$form_post = $_POST['id'];
+$form_post = $_POST['config'];
 
 // Check to see if the directory exists, if not create it
 if (!file_exists(CONFIGJSON_PERSISTENT_DIRECTORY)) {
