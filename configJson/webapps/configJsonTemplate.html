@@ -69,9 +69,8 @@
 			// When the 'Save' button is pressed...save a JSON document to the server
 			//======================
 			document.getElementById('saveDocument').onclick = function () {
-				var mydata = '';
 				var mydata = JSON.stringify(editor.get());
-				var userdata = {'id':mydata};
+				var userdata = {'config':mydata};
 				
 				$.ajax({
 					type: "POST",
