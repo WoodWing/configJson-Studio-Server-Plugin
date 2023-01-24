@@ -37,24 +37,13 @@ class WW_TestSuite_HealthCheck2_configJson_TestCase extends TestCase
         //===================
         // Set up variables for testing
         //===================
-        $myConfigFileTemplatePath = BASEDIR . '/config/plugins/configJson/jsonTemplates/configJson.template.json';
+        $configJsonTemplatePath = BASEDIR . '/config/plugins/configJson/jsonTemplates/configJson.template.json';
 
         //===================
         // Check if the directory exists
         //===================
-        $configDirectoryExists = file_exists(CONFIGJSON_PERSISTENT_DIRECTORY);
-
-        if (!$configDirectoryExists) {
-            $old_umask = umask(0); // Needed for mkdir, see http://www.php.net/umask
-
-            // Create the directory...need try/catch here
-            $dirCreated = mkdir(CONFIGJSON_PERSISTENT_DIRECTORY, 0777, true);
-            if ($dirCreated) {
-                chmod(CONFIGJSON_PERSISTENT_DIRECTORY, 0777);  // We cannot always set access with mkdir because of umask
-                umask($old_umask);
-            }
-
-            if (!file_exists(CONFIGJSON_PERSISTENT_DIRECTORY)) {
+        if (!file_exists(CONFIGJSON_PERSISTENT_DIRECTORY)) {
+            if (!WW_Utils_FolderUtils::mkFullDir(CONFIGJSON_PERSISTENT_DIRECTORY)) {
                 $this->setResult('ERROR', 'Server Plugin config directory does not exist and could not be created.');
                 return;
             }
@@ -65,12 +54,13 @@ class WW_TestSuite_HealthCheck2_configJson_TestCase extends TestCase
         //===================
         if (!file_exists(CONFIGJSON_PERSISTENT_FILENAME)
         ) {
-            $templateJsonFile = file_get_contents($myConfigFileTemplatePath);
+            $templateJsonFile = file_get_contents($configJsonTemplatePath);
             file_put_contents(CONFIGJSON_PERSISTENT_FILENAME, $templateJsonFile);
-        } else {
-            if (!file_exists(CONFIGJSON_PERSISTENT_FILENAME)) {
-                $this->setResult('ERROR', 'Server Plugin config file does not exist and could not be created.');
-            }
+        }
+
+        if (!file_exists(CONFIGJSON_PERSISTENT_FILENAME)) {
+            $this->setResult('ERROR', 'Server Plugin config file does not exist and could not be created.');
+            return;
         }
     }
 }
