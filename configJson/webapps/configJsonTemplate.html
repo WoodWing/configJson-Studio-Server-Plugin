@@ -12,12 +12,11 @@
 	
 	<p>
 		<!-- Get rid of this button by listening for a change in the editor? -->
-		Save Config File to Studio: <input type="button" id="saveDocument" value="Save" />
+		Save Config File to Studio: <input type="button" id="saveDocument" value="Save" onclick="saveFile()" />
 	</p>	
 	<form method="post" action="../../config/plugins/configJson/webapps/form_action.php" target="_parent">
 		<div id="jsoneditor" style="width: 800px; height: 400px;"></div>
 		<script>
-	   
 	   		//======================
 			// create the editor
 			//======================
@@ -31,7 +30,6 @@
 			//======================
 			// Load JSON from config file
 			//======================
-			
 			const config = fetch("../../config/plugins/configJson/webapps/loadJson.php")
 			  .then((response) => response.json())
 			  .then((config) => {
@@ -44,12 +42,9 @@
 			
 			const getConfig = () => {
 			  config.then((a) => {
-				
 				// Set the JSON in the editor
 				editor.set(a);
-			
 			  });
-			  
 			};
 			
 			
@@ -63,27 +58,24 @@
 			// As changes are made within the editor get the json
 			//======================
 			const updatedJson = editor.get();
-	
 			
 			//======================
 			// When the 'Save' button is pressed...save a JSON document to the server
 			//======================
-			document.getElementById('saveDocument').onclick = function () {
-				var mydata = JSON.stringify(editor.get());
-				var userdata = {'config':mydata};
-				
-				$.ajax({
-					type: "POST",
-					url: "../../config/plugins/configJson/webapps/saveJson.php",
-					data:userdata, 
-				success: function(data){
+			function saveFile() {
+				const editorData = JSON.stringify(editor.get());
+				const postData = new FormData();
+				postData.append('config', editorData);
+
+				fetch('../../config/plugins/configJson/webapps/saveJson.php', {
+					method: 'POST',
+					body: postData,
+				}).then((data) => {
 					console.log(data);
-				}
-            });
-		
-		
-		}
-			
+				}).catch(err => {
+					console.debug("Error in fetch", err);
+				});
+			}
 		</script>
   	</form>
   	<p style="color:red;">*Do not store passwords within your JSON config file</p>
