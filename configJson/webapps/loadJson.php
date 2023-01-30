@@ -23,7 +23,7 @@
 require_once __DIR__ . '/../../../../config/config.php';
 require_once BASEDIR . '/server/secure.php';
 
-// plugin config.php and wwusa functions
+// plugin config.php
 require_once __DIR__ . '/../config.php';
 
 checkSecure('admin');

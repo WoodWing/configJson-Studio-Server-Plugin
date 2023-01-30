@@ -23,16 +23,21 @@
 require_once __DIR__ . '/../../../../config/config.php';
 require_once BASEDIR . "/server/secure.php";
 
-// plugin config.php and wwusa functions
+// plugin config.php
 require_once __DIR__ . '/../config.php';
 
 checkSecure(true);
 
 $form_post = $_POST['config'];
 
-// Check to see if the directory exists, if not create it
+if(!trim($form_post)) {
+    return;
+}
+
 if (!file_exists(CONFIGJSON_PERSISTENT_DIRECTORY)) {
-    mkdir(CONFIGJSON_PERSISTENT_DIRECTORY, 0700);
+    if (!WW_Utils_FolderUtils::mkFullDir(CONFIGJSON_PERSISTENT_DIRECTORY)) {
+        throw Error('Server Plugin config directory does not exist and could not be created.');
+    }
 }
 
 // Write the config file back o the server
